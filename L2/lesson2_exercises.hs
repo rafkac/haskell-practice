@@ -94,12 +94,16 @@ squares (x:xs) = (x * x) : squares (xs)
 --     swap (1, 'a') == ('a', 1)
 --     (Note the type: it works for any two types. Use type variables a and b.)
 swap :: (a, b) -> (b, a)
+swap (x, y) = (y, x)
 
 
 
 -- C2. Given a list of (name, age) pairs, sum all the ages.
 --     totalAge [("Ann",30),("Bo",25)] == 55
--- totalAge :: [(String, Int)] -> Int
+totalAge :: [(String, Int)] -> Int
+totalAge [] = 0
+totalAge (x:xs) = snd x + totalAge xs
+
 
 
 -- ---- D. Stretch (these make you think) ------------------------------
@@ -111,7 +115,12 @@ swap :: (a, b) -> (b, a)
 --     leadingCount [9]           == 1
 --     Hint: you need to look at the first TWO elements, so pattern-match
 --     (x : y : rest) as one case, and handle [x] and [] separately.
--- leadingCount :: [Int] -> Int
+leadingCount :: [Int] -> Int
+leadingCount [] = 0
+leadingCount [x] = 1
+leadingCount (x:y:rest)
+    | x == y    = 1 + leadingCount (y : rest)
+    | otherwise = 1
 
 
 -- D2. zipSum: given two lists, add them element-wise. Stop when EITHER
@@ -119,7 +128,10 @@ swap :: (a, b) -> (b, a)
 --     zipSum [1,2,3] [10,20,30,40] == [11,22,33]
 --     zipSum [] [1,2]              == []
 --     Hint: three equations — one for each empty case, one for both non-empty.
--- zipSum :: [Int] -> [Int] -> [Int]
+zipSum :: [Int] -> [Int] -> [Int]
+zipSum l1 [] = []
+zipSum [] l2 = []
+zipSum (x:xs) (y:ys) = (x + y) : zipSum xs ys
 
 
 -- D3. CHALLENGE — runs: split a list into runs of equal consecutive elements.
